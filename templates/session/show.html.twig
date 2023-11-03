@@ -3,32 +3,32 @@
 {% block title %}Session{% endblock %}
 
 {% block body %}
-    <h1>Session</h1>
-
-    <table class="table">
+<h1>Session</h1>
+<div class"overflow-x-auto border-x border-t">
+    <table class="table table-auto w-full my-5">
         <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ session.id }}</td>
+            <tr class="border-b hover:bg-gray-50">
+                <th class="text-left p-4 font-medium">Id</th>
+                <td class="p-4">{{ session.id }}</td>
             </tr>
-            <tr>
-                <th>StartAt</th>
-                <td>{{ session.startAt ? session.startAt|date('Y-m-d H:i:s') : '' }}</td>
+            <tr class="border-b hover:bg-gray-50">
+                <th class="text-left p-4 font-medium">StartAt</th>
+                <td class="p-4">{{ session.startAt ? session.startAt|date('Y-m-d H:i:s') : '' }}</td>
             </tr>
-            <tr>
-                <th>EndAt</th>
-                <td>{{ session.endAt ? session.endAt|date('Y-m-d H:i:s') : '' }}</td>
+            <tr class="border-b hover:bg-gray-50">
+                <th class="text-left p-4 font-medium">EndAt</th>
+                <td class="p-4">{{ session.endAt ? session.endAt|date('Y-m-d H:i:s') : '' }}</td>
             </tr>
-            <tr>
-                <th>Duration</th>
-                <td>{{ session.duration ? session.duration|date('H:i:s') : '' }}</td>
+            <tr class="border-b hover:bg-gray-50">
+                <th class="text-left p-4 font-medium">Duration</th>
+                <td class="p-4">{{ session.duration ? session.duration|date('H:i:s') : '' }}</td>
             </tr>
         </tbody>
     </table>
+</div>
+<a href="{{ path('app_session_index') }}" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">back to list</a>
 
-    <a href="{{ path('app_session_index') }}">back to list</a>
-
-    <a href="{{ path('app_session_edit', {'id': session.id}) }}">edit</a>
-
+<a href="{{ path('app_session_edit', {'id': session.id}) }}" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">edit</a>
+<div class="mb-4"></div>
     {{ include('session/_delete_form.html.twig') }}
 {% endblock %}

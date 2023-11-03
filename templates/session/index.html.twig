@@ -3,37 +3,37 @@
 {% block title %}Session index{% endblock %}
 
 {% block body %}
-    <h1>Session index</h1>
-
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>StartAt</th>
-                <th>EndAt</th>
-                <th>Duration</th>
-                <th>actions</th>
+<h1>Session index</h1>
+<div class"overflow-x-auto border-x border-t">
+    <table class="table table-auto w-full my-5">
+        <thead class="border-b">
+            <tr class="bg-gray-100">
+                <th class="text-left p-4 font-medium">Id</th>
+                <th class="text-left p-4 font-medium">StartAt</th>
+                <th class="text-left p-4 font-medium">EndAt</th>
+                <th class="text-left p-4 font-medium">Duration</th>
+                <th class="text-left p-4 font-medium">actions</th>
             </tr>
         </thead>
         <tbody>
         {% for session in sessions %}
-            <tr>
-                <td>{{ session.id }}</td>
-                <td>{{ session.startAt ? session.startAt|date('Y-m-d H:i:s') : '' }}</td>
-                <td>{{ session.endAt ? session.endAt|date('Y-m-d H:i:s') : '' }}</td>
-                <td>{{ session.duration ? session.duration|date('H:i:s') : '' }}</td>
-                <td>
-                    <a href="{{ path('app_session_show', {'id': session.id}) }}">show</a>
-                    <a href="{{ path('app_session_edit', {'id': session.id}) }}">edit</a>
+            <tr class="border-b hover:bg-gray-50">
+                <td class="p-4">{{ session.id }}</td>
+                <td class="p-4">{{ session.startAt ? session.startAt|date('Y-m-d H:i:s') : '' }}</td>
+                <td class="p-4">{{ session.endAt ? session.endAt|date('Y-m-d H:i:s') : '' }}</td>
+                <td class="p-4">{{ session.duration ? session.duration|date('H:i:s') : '' }}</td>
+                <td class="p-4">
+                    <a href="{{ path('app_session_show', {'id': session.id}) }}" class="py-2.5 px-5 mr-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">show</a>
+                    <a href="{{ path('app_session_edit', {'id': session.id}) }}" class="py-2.5 px-5 mr-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">edit</a>
                 </td>
             </tr>
         {% else %}
-            <tr>
+            <tr class="border-b hover:bg-gray-50">
                 <td colspan="5">no records found</td>
             </tr>
         {% endfor %}
         </tbody>
     </table>
-
-    <a href="{{ path('app_session_new') }}">Create new</a>
+</div>
+<a href="{{ path('app_session_new') }}" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Create new</a>
 {% endblock %}
