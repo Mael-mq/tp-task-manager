@@ -3,121 +3,113 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
-class User
+#[UniqueEntity(fields: ['email'], message: 'There is already an account with this email')]
+class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 255)]
-    private ?string $name = null;
+    #[ORM\Column(length: 180, unique: true)]
+    private ?string $email = null;
 
-    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Session::class)]
-    private Collection $sessions;
+    #[ORM\Column]
+    private array $roles = [];
 
-    #[ORM\OneToMany(mappedBy: 'User', targetEntity: Comment::class)]
-    private Collection $comments;
+    /**
+     * @var string The hashed password
+     */
+    #[ORM\Column]
+    private ?string $password = null;
 
-    #[ORM\Column(length: 255)]
-    private ?string $status = null;
-
-    public function __construct()
-    {
-        $this->sessions = new ArrayCollection();
-        $this->comments = new ArrayCollection();
-    }
+    #[ORM\Column(type: 'boolean')]
+    private $isVerified = false;
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getName(): ?string
+    public function getEmail(): ?string
     {
-        return $this->name;
+        return $this->email;
     }
 
-    public function setName(string $name): static
+    public function setEmail(string $email): static
     {
-        $this->name = $name;
+        $this->email = $email;
 
         return $this;
     }
 
     /**
-     * @return Collection<int, Session>
+     * A visual identifier that represents this user.
+     *
+     * @see UserInterface
      */
-    public function getSessions(): Collection
+    public function getUserIdentifier(): string
     {
-        return $this->sessions;
+        return (string) $this->email;
     }
 
-    public function addSession(Session $session): static
+    /**
+     * @see UserInterface
+     */
+    public function getRoles(): array
     {
-        if (!$this->sessions->contains($session)) {
-            $this->sessions->add($session);
-            $session->setUser($this);
-        }
+        $roles = $this->roles;
+        // guarantee every user at least has ROLE_USER
+        $roles[] = 'ROLE_USER';
 
-        return $this;
+        return array_unique($roles);
     }
 
-    public function removeSession(Session $session): static
+    public function setRoles(array $roles): static
     {
-        if ($this->sessions->removeElement($session)) {
-            // set the owning side to null (unless already changed)
-            if ($session->getUser() === $this) {
-                $session->setUser(null);
-            }
-        }
+        $this->roles = $roles;
 
         return $this;
     }
 
     /**
-     * @return Collection<int, Comment>
+     * @see PasswordAuthenticatedUserInterface
      */
-    public function getComments(): Collection
+    public function getPassword(): string
     {
-        return $this->comments;
+        return $this->password;
     }
 
-    public function addComment(Comment $comment): static
+    public function setPassword(string $password): static
     {
-        if (!$this->comments->contains($comment)) {
-            $this->comments->add($comment);
-            $comment->setUser($this);
-        }
+        $this->password = $password;
 
         return $this;
     }
 
-    public function removeComment(Comment $comment): static
+    /**
+     * @see UserInterface
+     */
+    public function eraseCredentials(): void
     {
-        if ($this->comments->removeElement($comment)) {
-            // set the owning side to null (unless already changed)
-            if ($comment->getUser() === $this) {
-                $comment->setUser(null);
-            }
-        }
-
-        return $this;
+        // If you store any temporary, sensitive data on the user, clear it here
+        // $this->plainPassword = null;
     }
 
-    public function getStatus(): ?string
+    public function isVerified(): bool
     {
-        return $this->status;
+        return $this->isVerified;
     }
 
-    public function setStatus(string $status): static
+    public function setIsVerified(bool $isVerified): static
     {
-        $this->status = $status;
+        $this->isVerified = $isVerified;
 
         return $this;
     }
