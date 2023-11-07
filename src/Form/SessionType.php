@@ -27,8 +27,8 @@ class SessionType extends AbstractType
             ->add('user', EntityType::class, [
                 'class' => User::class,
                 'choice_label' => 'name',
-                
             ])
+            ->add('isCompleted')
         ;
     }
 
