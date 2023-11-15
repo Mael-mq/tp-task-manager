@@ -15,9 +15,6 @@ class SessionType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('startAt')
-            ->add('endAt')
-            ->add('duration')
             ->add('tasks', EntityType::class, [
                 'class' => Task::class,
                 'choice_label' => 'name',
@@ -26,9 +23,8 @@ class SessionType extends AbstractType
             ])
             ->add('user', EntityType::class, [
                 'class' => User::class,
-                'choice_label' => 'name',
+                'choice_label' => 'email',
             ])
-            ->add('isCompleted')
         ;
     }
 

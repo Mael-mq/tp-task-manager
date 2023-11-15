@@ -17,6 +17,7 @@ class SessionController extends AbstractController
     #[Route('/', name: 'app_session_index', methods: ['GET'])]
     public function index(SessionRepository $sessionRepository): Response
     {
+        
         return $this->render('session/index.html.twig', [
             'sessions' => $sessionRepository->findAll(),
         ]);
@@ -30,6 +31,10 @@ class SessionController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $session->setIsCompleted(false);
+            foreach($session->getTasks() as $task) {
+                $task->addTaskSession($session);
+            }
             $entityManager->persist($session);
             $entityManager->flush();
 
@@ -58,7 +63,6 @@ class SessionController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->flush();
-
             return $this->redirectToRoute('app_session_index', [], Response::HTTP_SEE_OTHER);
         }
 

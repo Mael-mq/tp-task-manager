@@ -13,6 +13,7 @@
                 <th class="text-left p-4 font-medium">StartAt</th>
                 <th class="text-left p-4 font-medium">EndAt</th>
                 <th class="text-left p-4 font-medium">Duration</th>
+                <th class="text-left p-4 font-medium">Tasks</th>
                 <th class="text-left p-4 font-medium">isCompleted</th>
                 <th class="text-left p-4 font-medium">actions</th>
             </tr>
@@ -24,6 +25,13 @@
                 <td class="p-4">{{ session.startAt ? session.startAt|date('Y-m-d H:i:s') : '' }}</td>
                 <td class="p-4">{{ session.endAt ? session.endAt|date('Y-m-d H:i:s') : '' }}</td>
                 <td class="p-4">{{ session.duration ? session.duration|date('H:i:s') : '' }}</td>
+                <td class="p-4">
+                    <ul>
+                        {% for task in session.tasks %}
+                            <li>{{ task.name }}</li>
+                        {% endfor %}
+                    </ul>
+                </td>
                 <td>
                     {% if session.isCompleted %}
                         <i class="fas fa-check-circle text-success"></i> 
