@@ -32,9 +32,6 @@ class SessionController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $session->setIsCompleted(false);
-            foreach($session->getTasks() as $task) {
-                $task->addTaskSession($session);
-            }
             $entityManager->persist($session);
             $entityManager->flush();
 

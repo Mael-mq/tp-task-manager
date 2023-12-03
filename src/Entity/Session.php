@@ -22,12 +22,6 @@ class Session
     #[ORM\Column(nullable: true)]
     private ?\DateTimeImmutable $endAt = null;
 
-    #[ORM\Column(type: Types::TIME_MUTABLE, nullable: true)]
-    private ?\DateTimeInterface $duration = null;
-
-    #[ORM\ManyToMany(targetEntity: Task::class, mappedBy: 'TaskSession')]
-    private Collection $tasks;
-
     #[ORM\ManyToOne(inversedBy: 'sessions')]
     #[ORM\JoinColumn(nullable: false)]
     private ?User $user = null;
@@ -35,9 +29,12 @@ class Session
     #[ORM\Column]
     private ?bool $isCompleted = null;
 
+    #[ORM\OneToMany(mappedBy: 'Session', targetEntity: TaskSession::class)]
+    private Collection $taskSessions;
+
     public function __construct()
     {
-        $this->tasks = new ArrayCollection();
+        $this->taskSessions = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -69,45 +66,6 @@ class Session
         return $this;
     }
 
-    public function getDuration(): ?\DateTimeInterface
-    {
-        return $this->duration;
-    }
-
-    public function setDuration(?\DateTimeInterface $duration): static
-    {
-        $this->duration = $duration;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, Task>
-     */
-    public function getTasks(): Collection
-    {
-        return $this->tasks;
-    }
-
-    public function addTask(Task $task): static
-    {
-        if (!$this->tasks->contains($task)) {
-            $this->tasks->add($task);
-            $task->addTaskSession($this);
-        }
-
-        return $this;
-    }
-
-    public function removeTask(Task $task): static
-    {
-        if ($this->tasks->removeElement($task)) {
-            $task->removeTaskSession($this);
-        }
-
-        return $this;
-    }
-
     public function getUser(): ?User
     {
         return $this->user;
@@ -128,6 +86,36 @@ class Session
     public function setIsCompleted(bool $isCompleted): static
     {
         $this->isCompleted = $isCompleted;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, TaskSession>
+     */
+    public function getTaskSessions(): Collection
+    {
+        return $this->taskSessions;
+    }
+
+    public function addTaskSession(TaskSession $taskSession): static
+    {
+        if (!$this->taskSessions->contains($taskSession)) {
+            $this->taskSessions->add($taskSession);
+            $taskSession->setSession($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTaskSession(TaskSession $taskSession): static
+    {
+        if ($this->taskSessions->removeElement($taskSession)) {
+            // set the owning side to null (unless already changed)
+            if ($taskSession->getSession() === $this) {
+                $taskSession->setSession(null);
+            }
+        }
 
         return $this;
     }

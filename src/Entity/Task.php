@@ -19,15 +19,15 @@ class Task
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $name = null;
 
-    #[ORM\ManyToMany(targetEntity: Session::class, inversedBy: 'tasks')]
-    private Collection $TaskSession;
-
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $description = null;
 
+    #[ORM\OneToMany(mappedBy: 'Task', targetEntity: TaskSession::class)]
+    private Collection $taskSessions;
+
     public function __construct()
     {
-        $this->TaskSession = new ArrayCollection();
+        $this->taskSessions = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -47,30 +47,6 @@ class Task
         return $this;
     }
 
-    /**
-     * @return Collection<int, Session>
-     */
-    public function getTaskSession(): Collection
-    {
-        return $this->TaskSession;
-    }
-
-    public function addTaskSession(Session $taskSession): static
-    {
-        if (!$this->TaskSession->contains($taskSession)) {
-            $this->TaskSession->add($taskSession);
-        }
-
-        return $this;
-    }
-
-    public function removeTaskSession(Session $taskSession): static
-    {
-        $this->TaskSession->removeElement($taskSession);
-
-        return $this;
-    }
-
     public function getDescription(): ?string
     {
         return $this->description;
@@ -79,6 +55,36 @@ class Task
     public function setDescription(?string $description): static
     {
         $this->description = $description;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, TaskSession>
+     */
+    public function getTaskSessions(): Collection
+    {
+        return $this->taskSessions;
+    }
+
+    public function addTaskSession(TaskSession $taskSession): static
+    {
+        if (!$this->taskSessions->contains($taskSession)) {
+            $this->taskSessions->add($taskSession);
+            $taskSession->setTask($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTaskSession(TaskSession $taskSession): static
+    {
+        if ($this->taskSessions->removeElement($taskSession)) {
+            // set the owning side to null (unless already changed)
+            if ($taskSession->getTask() === $this) {
+                $taskSession->setTask(null);
+            }
+        }
 
         return $this;
     }
