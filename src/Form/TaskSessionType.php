@@ -15,6 +15,7 @@ class TaskSessionType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
+
         $builder
             ->add('task', EntityType::class, [
                 'class' => Task::class,
@@ -22,13 +23,8 @@ class TaskSessionType extends AbstractType
                 'multiple' => false,
                 'expanded' => false,
             ])
-            ->add('session', EntityType::class, [
-                'class' => Session::class,
-                'choice_label' => 'id',
-                'multiple' => false,
-                'expanded' => false,
-            ])
         ;
+        
     }
 
     public function configureOptions(OptionsResolver $resolver): void

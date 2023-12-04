@@ -23,8 +23,37 @@
         </tbody>
     </table>
     <a href="{{ path('app_session_index') }}" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">back to list</a>
-
-<a href="{{ path('app_session_edit', {'id': session.id}) }}" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">edit</a>
+    <a href="{{ path('app_session_edit', {'id': session.id}) }}" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">edit</a>
+    <h2 class="mt-5">Tasks</h2>
+    <table class="table table-auto w-full my-5">
+        <thead class="border-b">
+            <tr class="bg-gray-100">
+                <th class="text-left p-4 font-medium">Id</th>
+                <th class="text-left p-4 font-medium">Name</th>
+                <th class="text-left p-4 font-medium">IsCompleted</th>
+                <th class="text-left p-4 font-medium">Delete Task for this Session</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for task in tasks %}
+            <tr class="border-b hover:bg-gray-50">
+                <th class="text-left p-4 font-medium">{{ task.idTaskSession }}</th>
+                <td class="p-4">{{ task.taskName }}</td>
+                <td class="p-4">
+                    {% if task.isTaskCompleted %}
+                        <i class="fas fa-check-circle text-success"></i> 
+                    {% else %}
+                        <i class="fas fa-times-circle text-danger"></i>
+                    {% endif %}
+                </td>
+                <td class="p-4">
+                    {{ include('task_session/_delete_form.html.twig') }}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <a href="{{ path('app_task_session_new', {'id': session.id}) }}" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">New task for this Session</a>
 <div class="mb-4"></div>
     {{ include('session/_delete_form.html.twig') }}
 </div>

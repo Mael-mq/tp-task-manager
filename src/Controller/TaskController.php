@@ -55,8 +55,9 @@ class TaskController extends AbstractController
     {
         $form = $this->createForm(TaskType::class, $task);
         $form->handleRequest($request);
-
+        
         if ($form->isSubmitted() && $form->isValid()) {
+            
             $entityManager->flush();
 
             return $this->redirectToRoute('app_task_index', [], Response::HTTP_SEE_OTHER);

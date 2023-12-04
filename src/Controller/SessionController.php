@@ -5,6 +5,8 @@ namespace App\Controller;
 use App\Entity\Session;
 use App\Form\SessionType;
 use App\Repository\SessionRepository;
+use App\Repository\TaskRepository;
+use App\Repository\TaskSessionRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -45,10 +47,20 @@ class SessionController extends AbstractController
     }
 
     #[Route('/{id}', name: 'app_session_show', methods: ['GET'])]
-    public function show(Session $session): Response
+    public function show(Session $session, TaskSessionRepository $taskSessionRepository, TaskRepository $taskRepository): Response
     {
+        $task_sessions = $taskSessionRepository->findBy(['Session'=>$session->getId()]);
+        foreach($task_sessions as $task_session){
+            $tasks[] = [
+                "idTaskSession" => $task_session->getId(),
+                "taskName" => $taskRepository->find($task_session->getTask()->getId())->getName(),
+                "isTaskCompleted" => $task_session->isIsTaskCompleted()
+            ];
+        }
         return $this->render('session/show.html.twig', [
             'session' => $session,
+            'tasks' => $tasks,
+            'task_sessions' => $task_sessions
         ]);
     }
 
