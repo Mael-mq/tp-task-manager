@@ -20,20 +20,6 @@
                 <th class="text-left p-4 font-medium">EndAt</th>
                 <td class="p-4">{{ session.endAt ? session.endAt|date('Y-m-d H:i:s') : '' }}</td>
             </tr>
-            <tr class="border-b hover:bg-gray-50">
-                <th class="text-left p-4 font-medium">Duration</th>
-                <td class="p-4">{{ session.duration ? session.duration|date('H:i:s') : '' }}</td>
-            </tr>
-            <tr class="border-b hover:bg-gray-50">
-                <th class="text-left p-4 font-medium">Tasks</th>
-                <td class="p-4">
-                    <ul>
-                        {% for task in session.tasks %}
-                            <li>{{ task.name }}</li>
-                        {% endfor %}
-                    </ul>
-                </td>
-            </tr>
         </tbody>
     </table>
     <a href="{{ path('app_session_index') }}" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">back to list</a>
