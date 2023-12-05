@@ -1,0 +1,53 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Session{% endblock %}
+
+{% block body %}
+
+<div class="overflow-x-auto border-x border-t w-4/5 p-4">
+<h1>Session</h1>
+    <table class="table table-auto w-full my-5">
+        <tbody>
+            <tr class="border-b hover:bg-gray-50">
+                <th class="text-left p-4 font-medium">StartAt</th>
+                <td class="p-4">{{ session.startAt ? session.startAt|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr class="border-b hover:bg-gray-50">
+                <th class="text-left p-4 font-medium">EndAt</th>
+                <td class="p-4">{{ session.endAt ? session.endAt|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+        </tbody>
+    </table>
+    <a href="{{ path('app_session_index') }}" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">back to list</a>
+    <a href="{{ path('app_home_session_end', {'id': session.id}) }}" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Marquer la session comme terminée</a>
+    <h2 class="mt-5">Tasks</h2>
+    <table class="table table-auto w-full my-5">
+        <thead class="border-b">
+            <tr class="bg-gray-100">
+                <th class="text-left p-4 font-medium">Name</th>
+                <th class="text-left p-4 font-medium">Description</th>
+                <th class="text-left p-4 font-medium">IsCompleted</th>
+                <th class="text-left p-4 font-medium">Marquer la tâche comme terminée</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for task in tasks %}
+            <tr class="border-b hover:bg-gray-50">
+                <td class="p-4">{{ task.taskName }}</td>
+                <td class="p-4">{{ task.taskDescription }}</td>
+                <td class="p-4">
+                    {% if task.isTaskCompleted %}
+                        <i class="fas fa-check-circle text-success"></i> 
+                    {% else %}
+                        <i class="fas fa-times-circle text-danger"></i>
+                    {% endif %}
+                </td>
+                <td class="p-4">
+                    <a href="{{ path('app_task_session_end', {'session': session.id, 'id': task.idTaskSession }) }}" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Terminer</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+{% endblock %}

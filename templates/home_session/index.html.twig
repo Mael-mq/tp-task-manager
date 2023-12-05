@@ -1,0 +1,42 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Session index{% endblock %}
+
+{% block body %}
+
+<div class="overflow-x-auto border-x border-t w-4/5 p-4">
+    <h1>Mes Session</h1>
+    <table class="table table-auto w-full my-5">
+        <thead class="border-b">
+            <tr class="bg-gray-100">
+                <th class="text-left p-4 font-medium">StartAt</th>
+                <th class="text-left p-4 font-medium">EndAt</th>
+                <th class="text-left p-4 font-medium">Session terminée</th>
+                <th class="text-left p-4 font-medium">Voir la session</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for session in sessions %}
+            <tr class="border-b hover:bg-gray-50">
+                <td class="p-4">{{ session.startAt ? session.startAt|date('Y-m-d H:i:s') : '' }}</td>
+                <td class="p-4">{{ session.endAt ? session.endAt|date('Y-m-d H:i:s') : '' }}</td>
+                <td>
+                    {% if session.isCompleted %}
+                        <i class="fas fa-check-circle text-success"></i> 
+                    {% else %}
+                        <i class="fas fa-times-circle text-danger"></i>
+                    {% endif %}
+                </td>
+                <td class="p-4">
+                    <a href="{{ path('app_home_session_show', {'id': session.id}) }}" class="py-2.5 px-5 mr-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">Modifier</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr class="border-b hover:bg-gray-50">
+                <td colspan="5">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
