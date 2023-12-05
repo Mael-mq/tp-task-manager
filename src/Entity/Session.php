@@ -17,7 +17,7 @@ class Session
     private ?int $id = null;
 
     #[ORM\Column(nullable: true)]
-    private ?\DateTimeImmutable $startAt = null;
+    private ?\DateTime $startAt = null;
 
     #[ORM\Column(nullable: true)]
     private ?\DateTimeImmutable $endAt = null;
@@ -42,12 +42,12 @@ class Session
         return $this->id;
     }
 
-    public function getStartAt(): ?\DateTimeImmutable
+    public function getStartAt(): ?\DateTime
     {
         return $this->startAt;
     }
 
-    public function setStartAt(?\DateTimeImmutable $startAt): static
+    public function setStartAt(?\DateTime $startAt): static
     {
         $this->startAt = $startAt;
 
