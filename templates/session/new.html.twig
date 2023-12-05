@@ -3,13 +3,11 @@
 {% block title %}New Session{% endblock %}
 
 {% block body %}
-<div class="flex flex-col">
-    <h1 class="h-fit mb-5">Create new Session</h1>
+<div class="flex flex-col pl-5">
+    <h1 class="mb-5">Create new Session</h1>
 
-    <div class="h-fit">
     {{ include('session/_form.html.twig') }}
-    </div>
 
-    <a class="h-fit mt-5" href="{{ path('app_session_index') }}">back to list</a>
+    <a class="my-5" href="{{ path('app_session_index') }}">back to list</a>
 </div>
 {% endblock %}

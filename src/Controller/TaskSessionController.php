@@ -16,7 +16,6 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Route('admin/task-session')]
 class TaskSessionController extends AbstractController
 {
-
     #[Route('/new/{id}', name: 'app_task_session_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager, SessionRepository $sessionRepository): Response
     {

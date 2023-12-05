@@ -50,6 +50,7 @@ class SessionController extends AbstractController
     public function show(Session $session, TaskSessionRepository $taskSessionRepository, TaskRepository $taskRepository): Response
     {
         $task_sessions = $taskSessionRepository->findBy(['Session'=>$session->getId()]);
+        $tasks= [];
         foreach($task_sessions as $task_session){
             $tasks[] = [
                 "idTaskSession" => $task_session->getId(),
